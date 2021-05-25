@@ -1,0 +1,10 @@
+{
+  "name": "clean-run",
+  "version": "1.0.0",
+  "bin": {
+    "clean-run": "index.js"
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Gerald <gera2ld@live.com>"
+}
