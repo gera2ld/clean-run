@@ -12,14 +12,13 @@ Usage:
 
 $ clean-run [options] <entryFile> [other arguments ...]
 
-  <entryFile> - path to the main script, set to - if piped from stdin
+  <entryFile>       path to the main script, set to - if piped from stdin
 
 Options:
 
-  -h - show this message
-  -s - suppress npm logs
-  -c - clean after running, requires Node.js >= 14.14.0
-  -C <cwd> - set a different path as current working directory, it will be removed if -c is enabled
+  -s                suppress npm logs
+  -c                clean after running, requires Node.js >= 14.14.0
+  -C <cwd>          set a different path as current working directory, it will be removed if -c is enabled
 
 `;
 
