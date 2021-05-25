@@ -6,5 +6,9 @@
   },
   "main": "index.js",
   "license": "MIT",
-  "author": "Gerald <gera2ld@live.com>"
+  "author": "Gerald <gera2ld@live.com>",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

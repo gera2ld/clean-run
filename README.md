@@ -42,8 +42,14 @@ Or you can use npx to get a one-liner:
 $ npx clean-run my-script.js
 ```
 
-You can even run a remote script directly:
+Run the script from a temporary directory and clean after finished:
 
 ```bash
-$ curl -fsSL https://raw.githubusercontent.com/gera2ld/clean-run/master/demos/cowsay.js | npx clean-run -
+$ npx clean-run -scC tmp my-script.js
+```
+
+You can even run a remote script directly (try it by yourself 👇🏻):
+
+```bash
+$ curl -fsSL https://raw.githubusercontent.com/gera2ld/clean-run/master/demos/cowsay.js | npx clean-run -scC tmp -
 ```

@@ -92,15 +92,21 @@ function parseArgs(args) {
       rest = args.slice(i);
       break;
     }
-    if (arg === '-s') {
-      options.silent = true;
-    } else if (arg === '-C') {
-      i += 1;
-      options.cwd = path.resolve(args[i]);
-    } else if (arg === '-c') {
-      options.clean = true;
-    } else if (arg === '-h') {
-      options.help = true;
+    for (let j = 1; j < arg.length; j += 1) {
+      const c = arg[j];
+      if (c === 's') {
+        options.silent = true;
+      } else if (c === 'c') {
+        options.clean = true;
+      } else if (c === 'h') {
+        options.help = true;
+      } else if (c === 'C') {
+        if (j < arg.length - 1) {
+          throw new Error(`-${c} requires a value`);
+        }
+        i += 1;
+        options.cwd = path.resolve(args[i]);
+      }
     }
   }
   return { options, rest };
