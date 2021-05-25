@@ -1,4 +1,4 @@
-#!/bin/env node
+#!/usr/bin/env node
 /**
  * Run script from a clean environment, where no third-party dependency is available.
  */
