@@ -1,6 +1,7 @@
 {
   "name": "clean-run",
   "version": "1.0.2",
+  "description": "Run a Node.js script in a clean environment without caring about the dependencies.",
   "bin": {
     "clean-run": "index.js"
   },

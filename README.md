@@ -14,6 +14,8 @@ When running a CI script, it is likely that we don't need all dependencies defin
 
 If you are familiar with Deno, you will miss the feature to run a script with all the dependencies from remote. With `clean-run` you can easily run a script like that in Node.js.
 
+If you are tired of writing obscure Bash scripts, you can write a Node.js script and let `clean-run` to deal with the dependencies.
+
 ## How does this work?
 
 `clean-run` scans the entry script file to see what packages it really depends on and only install those needed. We don't have to set mirrors and wait for large packages that are not even required.
