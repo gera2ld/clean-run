@@ -1,6 +1,8 @@
 # clean-run
 
-Run a Node.js script in a clean environment.
+Run a Node.js script in a clean environment without caring about the dependencies. This is a `deno run` alternative that works for Node.js.
+
+Requires Node.js >= 14.14.0.
 
 ## Motivation
 
@@ -20,13 +22,11 @@ Usage:
 
 $ clean-run [options] <entryFile> [other arguments ...]
 
-  <entryFile>       path to the main script, set to - if piped from stdin
+  <entryFile>   path to the main script, set to - if piped from stdin
 
 Options:
 
-  -s                suppress npm logs
-  -c                clean after running, requires Node.js >= 14.14.0
-  -C <cwd>          set a different path as current working directory, it will be removed if -c is enabled
+  -s            suppress npm logs
 ```
 
 You will need to install this one dependency first.
@@ -39,17 +39,11 @@ $ clean-run my-script.js
 Or you can use npx to get a one-liner:
 
 ```bash
-$ npx clean-run my-script.js
-```
-
-Run the script from a temporary directory and clean after finished:
-
-```bash
-$ npx clean-run -scC tmp my-script.js
+$ npx clean-run -s my-script.js
 ```
 
 You can even run a remote script directly (try it by yourself 👇🏻):
 
 ```bash
-$ curl -fsSL https://raw.githubusercontent.com/gera2ld/clean-run/master/demos/cowsay.js | npx clean-run -scC tmp -
+$ curl -fsSL https://raw.githubusercontent.com/gera2ld/clean-run/master/demos/cowsay.js | npx clean-run -s -
 ```

@@ -3,6 +3,7 @@
  * Run script from a clean environment, where no third-party dependency is available.
  */
 const fs = require('fs').promises;
+const os = require('os');
 const path = require('path');
 const { builtinModules } = require('module');
 const { spawn } = require('child_process');
@@ -17,8 +18,6 @@ $ clean-run [options] <entryFile> [other arguments ...]
 Options:
 
   -s                suppress npm logs
-  -c                clean after running, requires Node.js >= 14.14.0
-  -C <cwd>          set a different path as current working directory, it will be removed if -c is enabled
 
 `;
 
@@ -82,7 +81,7 @@ async function installDeps(deps, options) {
 
 function parseArgs(args) {
   const options = {
-    cwd: '.',
+    cwd: path.join(os.tmpdir(), 'clean-run-' + Math.random().toString(36).slice(2)),
   };
   let rest = [];
   for (let i = 0; i < args.length; i += 1) {
@@ -95,29 +94,12 @@ function parseArgs(args) {
       const c = arg[j];
       if (c === 's') {
         options.silent = true;
-      } else if (c === 'c') {
-        options.clean = true;
       } else if (c === 'h') {
         options.help = true;
-      } else if (c === 'C') {
-        if (j < arg.length - 1) {
-          throw new Error(`-${c} requires a value`);
-        }
-        i += 1;
-        options.cwd = path.resolve(args[i]);
       }
     }
   }
   return { options, rest };
-}
-
-async function exists(fullpath) {
-  try {
-    await fs.stat(fullpath);
-  } catch {
-    return false;
-  }
-  return true;
 }
 
 async function readStream(input) {
@@ -155,23 +137,11 @@ async function main() {
   } else {
     entry = require.resolve(path.resolve(entryFile));
   }
+  await fs.mkdir(options.cwd, { recursive: true });
   await scanDeps(entry, deps, visited);
-  let cleanCwd = false;
-  let cleanPkg = false;
-  let cleanModules = false;
-  if (options.cwd && !await exists(options.cwd)) {
-    await fs.mkdir(options.cwd, { recursive: true });
-    cleanCwd = true;
-  }
   const pkgFile = path.resolve(options.cwd, 'package.json');
-  if (!await exists(pkgFile)) {
-    await fs.writeFile(pkgFile, '{}', 'utf8');
-    cleanPkg = true;
-  }
+  await fs.writeFile(pkgFile, '{}', 'utf8');
   const modulesPath = path.resolve(options.cwd, 'node_modules');
-  if (!await exists(modulesPath)) {
-    cleanModules = true;
-  }
   await installDeps(deps, options);
   await spawnAsync('node', rest, {
     env: {
@@ -180,12 +150,10 @@ async function main() {
     },
     stdin: typeof entry === 'string' ? null : entry.content,
   });
-  if (options.clean) {
-    const rmOptions = { force: true, recursive: true };
-    if (cleanModules) await fs.rm(modulesPath, rmOptions);
-    if (cleanPkg) await fs.rm(pkgFile, rmOptions);
-    if (cleanCwd) await fs.rm(options.cwd, rmOptions);
-  }
+  const rmOptions = { force: true, recursive: true };
+  await fs.rm(pkgFile, rmOptions);
+  await fs.rm(modulesPath, rmOptions);
+  await fs.rm(options.cwd, rmOptions);
 }
 
 main().catch(err => {
