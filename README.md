@@ -1,5 +1,9 @@
 # clean-run
 
+[![NPM](https://img.shields.io/npm/v/clean-run.svg)](https://npm.im/clean-run)
+![License](https://img.shields.io/npm/l/clean-run.svg)
+![Downloads](https://img.shields.io/npm/dt/clean-run.svg)
+
 Run a Node.js script in a clean environment without caring about the dependencies. This is a `deno run` alternative that works for Node.js.
 
 Requires Node.js >= 14.14.0.
